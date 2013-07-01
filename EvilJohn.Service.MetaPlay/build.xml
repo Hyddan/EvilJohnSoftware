@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="EvilJohn.Service.MetaPlay" default="metaPlay">
+	<property name="distFolder" value="dist"/>
+
+	<target name="cleanLibsFolder">
+		<delete failonerror="false" verbose="true">
+			<fileset dir="${distFolder}/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</delete>	
+	</target>
+		
+	<target name="resolveDependencies" depends="cleanLibsFolder">
+		<copy todir="${distFolder}/lib">
+			<fileset dir="lib">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+    </target>
+	
+	<target name="metaPlay" depends="resolveDependencies">
+		<!-- Add custom logic here -->
+	</target>
+</project>

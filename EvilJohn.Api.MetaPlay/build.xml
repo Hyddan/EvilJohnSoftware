@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="EvilJohn.Api.MetaPlay" default="metaPlay">
+	<property name="webInfFolder" value="WebContent/WEB-INF"/>
+
+	<target name="cleanLibsFolder">
+		<delete failonerror="false" verbose="true">
+			<fileset dir="${webInfFolder}/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</delete>	
+	</target>
+		
+	<target name="resolveDependencies" depends="cleanLibsFolder">
+		<copy todir="${webInfFolder}/lib">
+			<fileset dir="lib">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+    </target>
+	
+	<target name="metaPlay" depends="resolveDependencies">
+		<!-- Add custom logic here -->
+	</target>
+</project>
