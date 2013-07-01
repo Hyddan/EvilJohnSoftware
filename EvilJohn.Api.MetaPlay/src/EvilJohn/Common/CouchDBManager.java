@@ -14,24 +14,24 @@ public class CouchDBManager extends DBManager
 		this.database = session.getDatabase(databaseName);
 	}
 
-	public ViewResults adHocView(String viewFunction) {
+	public ViewResults AdHocView(String viewFunction) {
 		return database.adhoc(viewFunction);
 	}
 
-	public ViewResults execView(String viewName) {
+	public ViewResults ExecView(String viewName) {
 		return database.view(viewName);
 	}
 
-	public ViewResults getAllDocuments() {
+	public ViewResults GetAllDocuments() {
 		return database.getAllDocuments();
 	}
 
-	public Document getDocumentById(String id)
+	public Document GetDocumentById(String id)
 	{
 		return database.getDocument(id);
 	}
 	
-	public void saveDocument(Document document)
+	public void SaveDocument(Document document)
 	{
 		database.saveDocument(document);
 	}

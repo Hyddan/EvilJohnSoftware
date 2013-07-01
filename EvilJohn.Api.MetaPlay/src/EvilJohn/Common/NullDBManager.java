@@ -7,9 +7,9 @@ public class NullDBManager extends DBManager
 {
 	public NullDBManager() { super("", -1); }
 
-	public ViewResults adHocView(String viewFunction) { return null; }
-	public ViewResults execView(String viewName) { return null; }
-	public ViewResults getAllDocuments() { return null; }
-	public Document getDocumentById(String id) { return null; }
-	public void saveDocument(Document document) { }
+	public ViewResults AdHocView(String viewFunction) { return null; }
+	public ViewResults ExecView(String viewName) { return null; }
+	public ViewResults GetAllDocuments() { return null; }
+	public Document GetDocumentById(String id) { return null; }
+	public void SaveDocument(Document document) { }
 }

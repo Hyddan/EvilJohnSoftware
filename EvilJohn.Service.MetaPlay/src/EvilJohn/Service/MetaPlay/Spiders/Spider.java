@@ -8,5 +8,6 @@ public abstract class Spider
 	{
 	}
 	
+	public abstract void Crawl();
 	public abstract String GetName();
 }

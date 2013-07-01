@@ -78,7 +78,7 @@ public class Episodes {
 		
 		try
 		{
-			ViewResults result = dbManager.adHocView("function (doc) { emit(null, doc); }");
+			ViewResults result = dbManager.AdHocView("function (doc) { emit(null, doc); }");
 			documents = result.getResults();
 		}
 		catch (Exception ex)

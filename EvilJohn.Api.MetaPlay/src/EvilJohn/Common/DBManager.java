@@ -13,9 +13,9 @@ public abstract class DBManager
 		this.dbUrl = dbUrl;
 	}
 
-	public abstract ViewResults adHocView(String viewFunction);
-	public abstract ViewResults execView(String viewName);
-	public abstract ViewResults getAllDocuments();
-	public abstract Document getDocumentById(String id);
-	public abstract void saveDocument(Document document);
+	public abstract ViewResults AdHocView(String viewFunction);
+	public abstract ViewResults ExecView(String viewName);
+	public abstract ViewResults GetAllDocuments();
+	public abstract Document GetDocumentById(String id);
+	public abstract void SaveDocument(Document document);
 }
