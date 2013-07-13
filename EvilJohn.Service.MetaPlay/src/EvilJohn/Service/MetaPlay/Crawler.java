@@ -12,8 +12,6 @@ public class Crawler {
 		spiders.add(new WeLovePublicServiceSpider());
 		
 		for (Spider spider : spiders) {
-			System.out.println(spider.GetName());
-			
 			spider.Crawl();
 		}
 	}

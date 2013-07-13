@@ -4,12 +4,16 @@ public class HBONordicSpider extends Spider
 {
 	public HBONordicSpider()
 	{
-		super("HBONordicSpider");
+		super("HBONordic");
 	}
 	
 	public void Crawl()
 	{
-		//ToDo: implement crawl logic for HBO Nordic
+		this.GetLastCrawlDate();
+		
+		//ToDo: implement crawl logic for HBO Nordic (Get everything with created/updated date newer than lastCrawlDate)
+		
+		this.SetLastCrawlDate();
 	}
 
 	public String GetName() {
