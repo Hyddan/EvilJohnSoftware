@@ -1,24 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="EvilJohn.Service.MetaPlay" default="metaPlay">
-	<property name="distFolder" value="dist"/>
+<project name="EvilJohn.Service.MetaPlay" default="postBuild">
+	<property name="dir.build" value="bin" />
+	<property name="dir.dist" value="dist" />
+	<property name="dir.EvilJohn.Common" value="../EvilJohn.Common" />
+	<property name="dir.lib" value="lib" />
+	<property name="dir.src" value="src" />
+	<property name="version" value="1.0.0" />
+	
+	<property name="jar.filename" value="${ant.project.name}-${version}.jar" />
+	<property name="jar.main.class" value="EvilJohn.Service.MetaPlay.Crawler" />
+	
+	<path id="classpath">
+		<fileset dir="${dir.lib}" includes="**/*.jar" />
+	</path>
+	
+	<pathconvert property="jar.classpath" pathsep=" ">
+		<path refid="classpath" />
+		<mapper>
+			<chainedmapper>
+				<flattenmapper />
+				<globmapper from="*.jar" to="lib/*.jar" />
+			</chainedmapper>
+		</mapper>
+	</pathconvert>
 
-	<target name="cleanLibsFolder">
-		<delete failonerror="false" verbose="true">
-			<fileset dir="${distFolder}/lib">
-				<include name="*.jar"/>
-			</fileset>
-		</delete>	
+	<target name="clean">
+		<delete dir="${dir.dist}" failonerror="false" verbose="true" />
+		<mkdir dir="${dir.dist}" />
 	</target>
 		
-	<target name="resolveDependencies" depends="cleanLibsFolder">
-		<copy todir="${distFolder}/lib">
-			<fileset dir="lib">
-				<include name="*.jar"/>
+	<target name="resolveDependencies" depends="clean">
+		<delete failonerror="false" verbose="true">
+			<fileset dir="${dir.lib}">
+				<include name="EvilJohn.Common-*.jar" />
+			</fileset>
+		</delete>
+		<ant antfile="${dir.EvilJohn.Common}/build.xml" inheritAll="false" target="postBuild" dir="${dir.EvilJohn.Common}" />
+		<copy todir="${dir.lib}">
+			<fileset dir="${dir.EvilJohn.Common}/dist">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${dir.dist}/lib">
+			<fileset dir="${dir.lib}">
+				<include name="*.jar" />
 			</fileset>
 		</copy>
     </target>
 	
-	<target name="metaPlay" depends="resolveDependencies">
-		<!-- Add custom logic here -->
+	<target name="compile" depends="resolveDependencies">
+		<mkdir dir="${dir.build}" />
+		<javac
+			srcdir="${dir.src}" 
+			destdir="${dir.build}" 
+			classpathref="classpath" 
+			includeantruntime="false" 
+			debug="true" 
+			encoding="UTF-8" 
+		/>
+	</target>
+	
+	<target name="jar" depends="compile">
+	    <tstamp>
+	    	   <format property="timestamp" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" />
+	    </tstamp>
+		<jar jarfile="${dir.dist}/${jar.filename}">
+			<manifest>
+				<attribute name="Built-On" value="${timestamp}" />
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Version" value="${version}" />
+				<attribute name="Main-Class" value="${jar.main.class}" />
+				<attribute name="Class-Path" value="${jar.classpath}" />
+			</manifest>
+			<fileset dir="${dir.build}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${dir.lib}">
+				<include name="**/*.jar" />
+			</fileset>
+			<!--zipgroupfileset dir="${dir.lib}" includes="*.jar" /-->
+		</jar>
+	</target>
+	
+	<target name="postBuild" depends="jar">
+		<!-- Post-build: Add post build logic here -->
 	</target>
 </project>

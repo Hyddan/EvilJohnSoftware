@@ -20,14 +20,12 @@ public class Episodes {
 	
 	public Episodes()
 	{
-//		couchUrl = servletContext.getInitParameter("couchUrl");
+		//couchUrl = servletContext.getInitParameter("couchUrl");
 		dbManager = DBManagerFactory.Create(couchUrl, "episodes");
-		System.out.println("Episodes constructor");
 	}
 	
 	static
 	{
-		System.out.println("Episodes static field");
 	}
 	
 	
@@ -68,7 +66,6 @@ public class Episodes {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response latest(@QueryParam("pageIndex") long pageIndex, @QueryParam("pageSize") long pageSize)
 	{
-		System.out.println("Episodes latest");
 		if(0 >= pageSize)
 		{
 			pageSize = 20;
@@ -84,10 +81,7 @@ public class Episodes {
 		catch (Exception ex)
 		{
 			//ToDo: Log.
-			System.out.println(ex.getMessage());
-			System.out.println(ex.getStackTrace());
-
-//			return Response.status(404).build();
+			//return Response.status(404).build();
 		}
 		
 		return Response.ok().entity(documents).build();

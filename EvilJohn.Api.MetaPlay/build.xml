@@ -1,24 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="EvilJohn.Api.MetaPlay" default="metaPlay">
-	<property name="webInfFolder" value="WebContent/WEB-INF"/>
+<project name="EvilJohn.Api.MetaPlay" default="postBuild">
+	<property name="dir.build" value="bin" />
+	<property name="dir.dist" value="dist" />
+	<property name="dir.EvilJohn.Common" value="../EvilJohn.Common" />
+	<property name="dir.lib" value="lib" />
+	<property name="dir.src" value="src" />
+	<property name="dir.webContent" value="WebContent" />
+	<property name="dir.webInf" value="WebContent/WEB-INF" />
+	<property name="version" value="1.0.0" />
+	
+	<property name="war.filename" value="${ant.project.name}-${version}.war" />
+	
+	<path id="classpath">
+		<fileset dir="${dir.lib}" includes="**/*.jar" />
+	</path>
 
-	<target name="cleanLibsFolder">
+	<target name="clean">
+		<delete dir="${dir.dist}" failonerror="false" verbose="true" />
+		<mkdir dir="${dir.dist}" />
+		
 		<delete failonerror="false" verbose="true">
-			<fileset dir="${webInfFolder}/lib">
+			<fileset dir="${dir.webInf}/lib">
 				<include name="*.jar"/>
 			</fileset>
 		</delete>	
 	</target>
 		
-	<target name="resolveDependencies" depends="cleanLibsFolder">
-		<copy todir="${webInfFolder}/lib">
-			<fileset dir="lib">
-				<include name="*.jar"/>
+	<target name="resolveDependencies" depends="clean">
+		<delete failonerror="false" verbose="true">
+			<fileset dir="${dir.lib}">
+				<include name="EvilJohn.Common-*.jar" />
+			</fileset>
+		</delete>
+		<ant antfile="${dir.EvilJohn.Common}/build.xml" inheritAll="false" target="postBuild" dir="${dir.EvilJohn.Common}" />
+		<copy todir="${dir.webInf}/lib">
+			<fileset dir="${dir.EvilJohn.Common}/dist">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${dir.webInf}/lib">
+			<fileset dir="${dir.lib}">
+				<include name="*.jar" />
 			</fileset>
 		</copy>
     </target>
 	
-	<target name="metaPlay" depends="resolveDependencies">
-		<!-- Add custom logic here -->
+	<target name="compile" depends="resolveDependencies">
+		<mkdir dir="${dir.build}" />
+		<javac
+			srcdir="${dir.src}" 
+			destdir="${dir.build}" 
+			classpathref="classpath" 
+			includeantruntime="false" 
+			debug="true" 
+			encoding="UTF-8" 
+		/>
+	</target>
+	
+	<target name="war" depends="compile">
+	    <tstamp>
+	    	   <format property="timestamp" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" />
+	    </tstamp>
+		<war destfile="${dir.dist}/${war.filename}" webxml="${dir.webInf}/web.xml">
+			<classes dir="${dir.build}" />
+			<fileset dir="${dir.webContent}" />
+		</war>
+	</target>
+	
+	<target name="postBuild" depends="war">
+		<!-- Post-build: Add post build logic here -->
 	</target>
 </project>
